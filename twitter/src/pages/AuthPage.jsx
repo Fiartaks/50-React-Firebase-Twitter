@@ -1,6 +1,11 @@
 import { useState } from "react";
-import { auth } from "./../firebase/config";
-import { createUserWithEmailAndPassword, sendPasswordResetEmail, signInWithEmailAndPassword } from "firebase/auth";
+import { auth, provider } from "./../firebase/config";
+import {
+  createUserWithEmailAndPassword,
+  sendPasswordResetEmail,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+} from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -10,7 +15,7 @@ const AuthPage = () => {
   const [pass, setPass] = useState("");
   const navigate = useNavigate();
 
-  const[isError, setIsError]=useState(false);
+  const [isError, setIsError] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -25,28 +30,33 @@ const AuthPage = () => {
           toast.error(err.code);
         });
     } else {
-signInWithEmailAndPassword(auth, email, pass)
-.then(()=>{
-  toast.info("Giris Yapildi");
-  navigate("/home");
-  
-})
-.catch((err)=> {
- 
- if (err.code === 'auth/invalid-credential'){
-  setIsError(true)
-  toast.error(`Kullanıcı adı veya şifre yanlış: $err.code`)
- }
-  
-    })
+      signInWithEmailAndPassword(auth, email, pass)
+        .then(() => {
+          toast.info("Giris Yapildi");
+          navigate("/home");
+        })
+        .catch((err) => {
+          if (err.code === "auth/invalid-credential") {
+            setIsError(true);
+            toast.error(`Kullanıcı adı veya şifre yanlış: $err.code`);
+          }
+        });
     }
   };
 
-  const sendMail =()=>{
-    sendPasswordResetEmail(auth, email)
-    .then(()=>{
+  const sendMail = () => {
+    sendPasswordResetEmail(auth, email).then(() => {
       toast.info("Şifre sıfırlama maili gönderildi");
-    })
+    });
+  };
+
+  //google hesabi ile ooturum acma
+
+  const loginWithGoogle = () => {
+
+   signInWithPopup(auth, provider)
+   .then(()=>navigate('/home'))
+
   }
 
   return (
@@ -57,7 +67,7 @@ signInWithEmailAndPassword(auth, email, pass)
         </div>
         <h1 className="text-center font-bold text-xl">Twitter a giris yap</h1>
 
-        <button className="flex items-center bg-white py-2 px-10 rounded-full text-black gap-3 transition hover:bg-gray-300 ">
+        <button onClick={loginWithGoogle} className="flex items-center bg-white py-2 px-10 rounded-full text-black gap-3 transition hover:bg-gray-300 ">
           <img className="h-[20px]" src="/google-logo.svg" alt="" />
           <span className="whitespace-nowrap">Google ile Giris Yap</span>
         </button>
@@ -95,13 +105,14 @@ signInWithEmailAndPassword(auth, email, pass)
           </p>
         </form>
 
-        {isError && ( 
-           <p onClick={sendMail} className="text-center text-red-500 cursor-pointer ">
-           Sifrenizi mi unuttunuz
-         </p>
-        ) }
-
-       
+        {isError && (
+          <p
+            onClick={sendMail}
+            className="text-center text-red-500 cursor-pointer "
+          >
+            Sifrenizi mi unuttunuz
+          </p>
+        )}
       </div>
     </section>
   );
