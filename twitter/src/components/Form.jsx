@@ -1,8 +1,39 @@
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { BsCardImage } from "react-icons/bs";
+import { db } from "../firebase/config";
 
 const Form = ({ user }) => {
+    //tweets koleksiyonun referansiini alt
+    const tweetsCol = collection(db, 'tweets')
+
+    console.log(user)
+
+  const handleSubmit =async(e) => {
+
+
+    e.preventDefault()
+    //inputlardaqki verilere eris
+    const textContent = e.target[0].value;
+    const imageContent = e.target[1].files[0];
+
+    //tweets koleksiyonuna yeni dokuman eklemek
+await addDoc(tweetsCol,{
+    textContent,
+    imageContent:null,
+    createdAt:serverTimestamp(),
+    user:{
+        id:user.uid,
+        name:user.displayName,
+        photo:user.photoURL,
+    },
+    likes:[],
+    isEdited:false,
+})
+
+  };
+
   return (
-    <form className="flex gap-3 p-4 border-b-[1px] border-gray-700">
+    <form onSubmit={handleSubmit} className="flex gap-3 p-4 border-b-[1px] border-gray-700">
       <img
         className="rounded-full h-[35px] md:h-[45px] mt-1"
         src={user?.photoURL}
