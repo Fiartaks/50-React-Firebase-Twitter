@@ -1,6 +1,8 @@
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { BsCardImage } from "react-icons/bs";
 import { db } from "../firebase/config";
+import { toast } from 'react-toastify';
+
 
 const Form = ({ user }) => {
     //tweets koleksiyonun referansiini alt
@@ -15,6 +17,9 @@ const Form = ({ user }) => {
     //inputlardaqki verilere eris
     const textContent = e.target[0].value;
     const imageContent = e.target[1].files[0];
+
+if(!textContent) return toast.info('Lutfen icerik giriniz')
+
 
     //tweets koleksiyonuna yeni dokuman eklemek
 await addDoc(tweetsCol,{
