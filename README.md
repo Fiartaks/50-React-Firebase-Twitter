@@ -5,7 +5,7 @@
 
 ## 📸 Screenshots 📸
 
-![](rotate.gif)
+![x.gif](https://github.com/Fiartaks/50-React-Firebase-Twitter/blob/main/twitter/public/x.gif)
 
 
 
