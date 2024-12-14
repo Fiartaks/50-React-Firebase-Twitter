@@ -16,19 +16,6 @@
 - 📰 **Feed Page (FeedPage.js)**: Displays user-related content, including posts, tweets, and other interactions.  
 - 📑 **Firebase Configuration**: Handles the setup for Firebase authentication and Firestore database to store user data and tweets.
 
-## 🏗️ MVC Characteristics
-
-### 1. Model
-- **Data Structures**: Utilizes Firebase Firestore as the model to manage and store users, posts, and like interactions.
-- **Authentication**: Firebase Auth is used to manage user sessions and interactions.
-
-### 2. View
-- **User Interface**: Components such as AuthPage, FeedPage, and Main deliver dynamic and responsive UIs for a rich user experience.
-- **Styling**: Implemented with modern CSS and uses libraries like React Icons for intuitive navigation and interaction.
-
-### 3. Controller
-- **Business Logic**: Controllers like ProtectedRoute manage user authorization and route access. Authentication logic resides in AuthPage.
-- **Real-Time Data**: Main component listens to real-time snapshot updates from Firestore, maintaining current post states.
 
 ## 🛠️ What Has Been Done in the Project?
 - 🔄 Implemented user authentication and session management with Firebase.  
